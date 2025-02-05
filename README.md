@@ -39,7 +39,7 @@ Un serveur SMTP (Mailgun, SendGrid, Gmail, etc.)
 
 ```bash
 git clone https://github.com/tucommenceapousser/findwork
-cd scraper-mailer
+cd findwork
 ```
 
 3️⃣ Configurer les variables
