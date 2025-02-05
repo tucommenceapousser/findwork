@@ -38,7 +38,7 @@ Un serveur SMTP (Mailgun, SendGrid, Gmail, etc.)
 2️⃣ Cloner le projet
 
 ```bash
-git clone https://github.com/tonrepo/scraper-mailer.git
+git clone https://github.com/tucommenceapousser/findwork
 cd scraper-mailer
 ```
 
