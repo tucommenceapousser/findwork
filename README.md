@@ -8,10 +8,15 @@ Ce projet permet de trouver des entreprises émergentes (artisans, startups, inv
 🚀 Fonctionnalités
 
 ✅ Scraping des entreprises sur PagesJaunes (BeautifulSoup, Scrapy)
+
 ✅ Stockage en base de données (SQLite)
+
 ✅ Génération d’emails personnalisés avec GPT-4
+
 ✅ Envoi d’emails via SMTP sécurisé
+
 ✅ Interface web Flask pour gérer les contacts
+
 ✅ Automatisation complète avec un script Bash
 
 
@@ -73,8 +78,11 @@ chmod +x run.sh
 ```
 
 ✔ Installe les dépendances
+
 ✔ Lance le scraping
+
 ✔ Démarre Flask en arrière-plan
+
 ✔ Ouvre l’interface web automatiquement
 
 
