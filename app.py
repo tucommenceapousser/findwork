@@ -1,43 +1,22 @@
-import scrapy
-from bs4 import BeautifulSoup
-import requests
+from flask import Flask, render_template, request
 import sqlite3
 
-DB_NAME = "entreprises.db"
+app = Flask(__name__)
 
-class EntrepriseSpider(scrapy.Spider):
-    name = "entreprises"
-    start_urls = [
-        "https://www.pagesjaunes.fr/annuaire/chercherlespros?quoiqui=artisan&ou=france"
-    ]
+@app.route("/")
+def index():
+    conn = sqlite3.connect("entreprises.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM entreprises")
+    entreprises = cursor.fetchall()
+    conn.close()
+    return render_template("index.html", entreprises=entreprises)
 
-    def parse(self, response):
-        soup = BeautifulSoup(response.text, "html.parser")
-        entreprises = soup.find_all("div", class_="bi-bloc")
-        
-        conn = sqlite3.connect(DB_NAME)
-        cursor = conn.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS entreprises 
-                         (nom TEXT, email TEXT, secteur TEXT, site TEXT)''')
+@app.route("/send_email", methods=["POST"])
+def send_email():
+    email = request.form["email"]
+    # Appeler send_email() ici
+    return "Email envoyé avec succès !"
 
-        for e in entreprises:
-            nom = e.find("h2").text.strip()
-            site = e.find("a")["href"] if e.find("a") else None
-            email = self.get_email_from_site(site) if site else None
-            secteur = "Artisanat"
-
-            if email:
-                cursor.execute("INSERT INTO entreprises (nom, email, secteur, site) VALUES (?, ?, ?, ?)", 
-                               (nom, email, secteur, site))
-                conn.commit()
-
-        conn.close()
-
-    def get_email_from_site(self, url):
-        """Essaie d'extraire un email d'un site web"""
-        try:
-            page = requests.get(url, timeout=5)
-            emails = set(re.findall(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", page.text))
-            return list(emails)[0] if emails else None
-        except:
-            return None
+if __name__ == "__main__":
+    app.run(debug=True)
